@@ -31,7 +31,6 @@ A Helm chart to run HA Netmaker on Kubernetes
 | image.pullPolicy | string | `"IfNotPresent"` | Pull Policy for images |
 | image.repository | string | `"gravitl/netmaker"` | The image repo to pull Netmaker image from |
 | ingress.annotations.base."kubernetes.io/ingress.allow-http" | string | `"false"` | annotation to generate ACME certs if available |
-| ingress.annotations.mq | object | `{}` |  |
 | ingress.annotations.nginx."nginx.ingress.kubernetes.io/rewrite-target" | string | `"/"` | destination addr for route |
 | ingress.annotations.nginx."nginx.ingress.kubernetes.io/ssl-redirect" | string | `"true"` | Redirect http to https |
 | ingress.annotations.rest | object | `{}` |  |
@@ -42,19 +41,14 @@ A Helm chart to run HA Netmaker on Kubernetes
 | ingress.annotations.ui | object | `{}` |  |
 | ingress.className | string | `"nginx"` |  |
 | ingress.enabled | bool | `true` | attempts to configure ingress if true |
-| ingress.hostPrefix.broker | string | `"broker."` | mqtt route subdomain |
 | ingress.hostPrefix.rest | string | `"api."` | api (REST) route subdomain |
 | ingress.hostPrefix.ui | string | `"dashboard."` | ui route subdomain |
 | ingress.tls.enabled | bool | `false` |  |
 | ingress.tls.issuerName | string | `"letsencrypt-prod"` |  |
-| mq.RWX.storageClassName | string | `""` |  |
-| mq.existingClaim | string | `""` |  |
+| mq.endpoint | string | `"ws://netmaker-mqtt:1883"` |  |
 | mq.existingSecret | string | `""` |  |
 | mq.password | string | `"3yyerWGdds43yegGR"` |  |
-| mq.replicas | int | `1` | how many MQTT replicas to create change to 2 or more and set singlenode to false if needed |
 | mq.secretKey | string | `""` |  |
-| mq.singlenode | bool | `true` |  |
-| mq.storageSize | string | `"128Mi"` |  |
 | mq.username | string | `"netmaker"` |  |
 | nameOverride | string | `""` | override the name for netmaker objects |
 | oauth.enabled | bool | `false` |  |
@@ -76,7 +70,6 @@ A Helm chart to run HA Netmaker on Kubernetes
 | postgresql.enabled | bool | `true` |  |
 | postgresql.persistence.existingClaim | string | `""` |  |
 | replicas | int | `1` | number of netmaker server replicas to create |
-| service.mqPort | int | `443` | port for MQTT service |
 | service.restPort | int | `8081` | port for API service |
 | service.type | string | `"ClusterIP"` | type for netmaker server services |
 | service.uiPort | int | `80` | port for UI service |

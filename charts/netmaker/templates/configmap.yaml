@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "netmaker.labels" . | nindent 4 }}
 data:
-  SERVER_NAME: broker.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}
-  SERVER_API_CONN_STRING: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}:443
-  SERVER_HTTP_HOST: api.{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}
+  SERVER_NAME: "{{ default "broker." .Values.ingress.hostPrefix.broker }}{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain }}"
+  SERVER_API_CONN_STRING: "{{ default "api." .Values.ingress.hostPrefix.rest }}{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain }}:443"
+  SERVER_HTTP_HOST: "{{ default "api." .Values.ingress.hostPrefix.rest }}{{ required "A valid .Values.baseDomain entry required!" .Values.baseDomain}}"
   API_PORT: "8081"
   {{- if not .Values.wireguard.kernel }}
   WG_QUICK_USERSPACE_IMPLEMENTATION: wireguard-go
@@ -26,10 +26,8 @@ data:
   SQL_USER: "{{ include "netmaker.database.username" . }}"
   SQL_DB: "{{ include "netmaker.database.database" . }}"
   DISPLAY_KEYS: "on"
-  MQ_HOST: {{ include "netmaker.fullname" . }}-mqtt
-  MQ_PORT: "{{ .Values.service.mqPort }}"
-  MQ_USERNAME: "{{ .Values.mq.username }}"
-  MQ_SERVER_PORT: "1883"
+  SERVER_BROKER_ENDPOINT: {{ .Values.mq.endpoint | quote }}
+  MQ_USERNAME: {{ .Values.mq.username | quote }}
   PLATFORM: "Kubernetes"
   VERBOSITY: "3"
   {{- if .Values.oauth.enabled }}

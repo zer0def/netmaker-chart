@@ -44,21 +44,13 @@ ui:
   replicas: 1
 
 mq:
-  # -- how many MQTT replicas to create
-  # change to 2 or more and set singlenode to false if needed
-  replicas: 1
-  singlenode: true
-  storageSize: 128Mi
+  endpoint: ws://netmaker-mqtt:1883
   username: netmaker
   password: 3yyerWGdds43yegGR
   # name of an existing secret to use for mq password. If set, ignores mq.password
   existingSecret: ''
   # name of key in existing secret to grab password from. If set, ignores mq.password
   secretKey: ''
-  # name of existing PVC claim to use. if set, RWX.storageClassName is ignored
-  existingClaim: ""
-  RWX:
-    storageClassName: ""
 
 dns:
   # -- whether or not to deploy coredns
@@ -77,8 +69,6 @@ service:
   type: ClusterIP
   # -- port for API service
   restPort: 8081
-  # -- port for MQTT service
-  mqPort: 443
   # -- port for UI service
   uiPort: 80
 
@@ -92,7 +82,6 @@ ingress:
   annotations:
     ui: {}
     rest: {}
-    mq: {}
     base:
       # -- annotation to generate ACME certs if available
       kubernetes.io/ingress.allow-http: "false"

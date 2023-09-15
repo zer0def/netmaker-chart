@@ -123,19 +123,14 @@ spec:
             - SYS_MODULE
         volumeMounts:
         - mountPath: /etc/netmaker/
-          name: shared-data
+          name: data
         {{- if .Values.dns.enabled }}
         - name: {{ include "netmaker.fullname" . }}-dns-pvc
           mountPath: /root/config/dnsconfig
         {{- end }}
       volumes:
-      - name: shared-data
-        persistentVolumeClaim:
-          {{- if .Values.persistence.sharedData.existingClaim }}
-          claimName: {{ .Values.persistence.sharedData.existingClaim }}
-          {{- else }}
-          claimName: {{ include "netmaker.fullname" . }}-shared-data-pvc
-          {{- end }}
+      - name: data
+        emptyDir: {}
       {{- if .Values.dns.enabled }}
       - name: {{ include "netmaker.fullname" . }}-dns-pvc
         persistentVolumeClaim:
